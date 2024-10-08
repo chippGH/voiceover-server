@@ -2,6 +2,7 @@ import os
 import json
 import parse_voiceover
 
+os.makedirs('./jsons/', exist_ok=True)
 print(os.get_exec_path())
 
 for filename in os.listdir('./sources'):
