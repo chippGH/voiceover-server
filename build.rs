@@ -23,8 +23,9 @@ fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> 
 fn main() {
     let dir_name = "voices";
     let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
-
-    Command::new("python")
+    
+    if env::var_os("CARGO_CFG_WINDOWS").is_some() {
+        Command::new("python")
         .args(vec![
             Path::new(&manifest_dir)
                 .join("voices/parse_all.py")
@@ -33,6 +34,17 @@ fn main() {
         ])
         .current_dir(Path::new(&manifest_dir).join(dir_name))
         .spawn().unwrap().wait().unwrap().success().not().then(|| panic!());
+    } else {
+        Command::new("python3")
+        .args(vec![
+            Path::new(&manifest_dir)
+                .join("voices/parse_all.py")
+                .to_str()
+                .unwrap()
+        ])
+        .current_dir(Path::new(&manifest_dir).join(dir_name))
+        .spawn().unwrap().wait().unwrap().success().not().then(|| panic!());
+    }
 
     /*for source in fs::read_dir(Path::new("./").join(dir_name).join("sources")).unwrap() {
         let source = source.unwrap();
