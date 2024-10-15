@@ -7,7 +7,7 @@ print(os.get_exec_path())
 
 for filename in os.listdir('./sources'):
     with open(f'./sources/{filename}', 'r', encoding='UTF-8') as f:
-        with open(f'./jsons/{filename + '.json'}', 'w') as f1:
+        with open(f'./jsons/{filename + ".json"}', 'w') as f1:
             lines = ''.join(f.readlines())
             voiceover = parse_voiceover.parse_voiceover(lines)
             if voiceover is None:
